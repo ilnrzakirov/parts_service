@@ -1,6 +1,11 @@
 from decouple import config
 from sqlalchemy.engine import URL
 
+from db.engine import (
+    asinc_engine,
+    get_session_maker,
+)
+
 UVICORN_PORT = int(config("UVICORN_PORT"))
 UVICORN_HOST = config("UVICORN_HOST")
 
@@ -18,3 +23,6 @@ postgres_url = URL.create(
     database=DB_NAME,
     host=DB_HOST,
 )
+
+async_engine = asinc_engine(postgres_url)
+session_maker = get_session_maker(async_engine)  # noqa f841
