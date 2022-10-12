@@ -1,4 +1,5 @@
 from decouple import config
+from loguru import logger
 from sqlalchemy.engine import URL
 
 from db.engine import (
@@ -26,3 +27,6 @@ postgres_url = URL.create(
 
 async_engine = asinc_engine(postgres_url)
 session_maker = get_session_maker(async_engine)  # noqa f841
+
+
+logger = logger.add("log.log", format="{time}, {level}, {message}", level="INFO", encoding="UTF-8")
