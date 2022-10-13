@@ -1,10 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
+from loguru import logger
 
 from settings import (
     UVICORN_HOST,
     UVICORN_PORT,
-    logger,
+    async_engine,
 )
 
 app = FastAPI()
@@ -18,6 +19,12 @@ async def root():
 @app.on_event("startup")
 async def startup():
     logger.info("Сервис зпущен")
+
+
+@app.on_event("shutdown")
+async def shutdown():
+    logger.info("Сервис остановлен")
+    await async_engine.dispose()
 
 
 if __name__ == "__main__":
