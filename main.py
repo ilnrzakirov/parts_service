@@ -18,11 +18,17 @@ async def root():
 
 @app.on_event("startup")
 async def startup():
+    """
+        Корутина запускается при пуске сервиса
+    """
     logger.info("Сервис зпущен")
 
 
 @app.on_event("shutdown")
 async def shutdown():
+    """
+        Корутина запускается при остановке сервиса
+    """
     logger.info("Сервис остановлен")
     await async_engine.dispose()
 
