@@ -29,6 +29,6 @@ postgres_url = URL.create(
 async_engine = asinc_engine(postgres_url)
 session_maker = get_session_maker(async_engine)  # noqa f841
 
-redis = Redis()
+redis = Redis(port=6379, host="localhost")
 
 logger = logger.add("log.log", format="{time}, {level}, {message}", level="INFO", encoding="UTF-8")
