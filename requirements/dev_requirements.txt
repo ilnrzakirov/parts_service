@@ -18,6 +18,8 @@ async-timeout==4.0.2
     #   redis
 asyncpg==0.26.0
     # via -r requirements/dev_requirements.in
+bcrypt==4.0.1
+    # via -r requirements/dev_requirements.in
 build==0.8.0
     # via pip-tools
 cfgv==3.3.1
@@ -64,6 +66,8 @@ packaging==21.3
     # via
     #   build
     #   redis
+passlib==1.7.4
+    # via -r requirements/dev_requirements.in
 pep517==0.13.0
     # via build
 pip-tools==6.8.0
