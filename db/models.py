@@ -2,9 +2,11 @@ from passlib.hash import bcrypt
 from sqlalchemy import (
     VARCHAR,
     Column,
+    ForeignKey,
     Integer,
 )
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 BaseModel = declarative_base()
 
@@ -53,3 +55,23 @@ class Category(BaseModel):
 
     def __init__(self, name):
         self.name = name
+
+
+class Product(BaseModel):
+    __tablename__ = "products"
+
+    id = Column(Integer, primary_key=True)
+    category = relationship("Category", secondary="category_product", backref="products")
+    balance = Column(Integer, nullable=False)
+    company = Column(Integer, ForeignKey("companies.id"))
+    name = Column(VARCHAR(255), nullable=False)
+    price = Column(Integer, nullable=False)
+
+    def __str__(self):
+        return self.name
+
+    def __init__(self, name, balance, company_id, price):
+        self.name = name
+        self.balance = balance
+        self.company = company_id
+        self.price = price
