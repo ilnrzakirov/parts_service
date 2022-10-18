@@ -24,3 +24,19 @@ class User(BaseModel):
 
     def password_is_valid(self, password):
         return bcrypt.verify(password, self.password)
+
+    def __str__(self):
+        return self.username
+
+
+class Company(BaseModel):
+    __tablename__ = "companies"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(VARCHAR(255), nullable=False)
+
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return self.name
