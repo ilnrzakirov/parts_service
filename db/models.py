@@ -13,9 +13,9 @@ class User(BaseModel):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    username = Column(VARCHAR(255), nullable=False)
+    username = Column(VARCHAR(255), nullable=False, unique=True)
     password = Column(VARCHAR(500), nullable=False)
-    email = Column(VARCHAR(300), nullable=False)
+    email = Column(VARCHAR(300), nullable=False, unique=True)
 
     def __init__(self, username, password, email):
         self.username = username
