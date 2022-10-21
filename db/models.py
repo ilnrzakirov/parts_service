@@ -13,6 +13,9 @@ BaseModel = declarative_base()
 
 
 class User(BaseModel):
+    """
+        Модель пользователя
+    """
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
@@ -33,6 +36,9 @@ class User(BaseModel):
 
 
 class Company(BaseModel):
+    """
+        Модель фирмы производителя запасных частей
+    """
     __tablename__ = "companies"
 
     id = Column(Integer, primary_key=True)
@@ -46,6 +52,9 @@ class Company(BaseModel):
 
 
 class Category(BaseModel):
+    """
+        Модель категорий запасных частей (Жидкости, масла итп)
+    """
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key=True)
@@ -67,6 +76,9 @@ association = sqlalchemy.Table(
 
 
 class Product(BaseModel):
+    """
+        Модель запасной части
+    """
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True)
