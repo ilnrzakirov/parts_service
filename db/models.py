@@ -29,6 +29,9 @@ class User(BaseModel):
         self.email = email
 
     def password_is_valid(self, password):
+        """
+            Метод верефицирует введенный пароль
+        """
         return bcrypt.verify(password, self.password)
 
     def __str__(self):
