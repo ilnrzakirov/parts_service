@@ -1,6 +1,7 @@
 from pydantic import (
     BaseModel,
     EmailStr,
+    constr,
     validator,
 )
 
@@ -10,15 +11,17 @@ class User(BaseModel):
     username: str
     password: str
     email: EmailStr
-    is_superuser: bool
-    is_stuf: bool
+    is_superuser: bool = False
+    is_stuf: bool = False
 
 
 class UserIn(BaseModel):
     username: str
-    password: str
+    password: constr(min_length=8)
     password2: str
     email: EmailStr
+    is_superuser: bool = False
+    is_stuf: bool = False
 
     @validator("password2")
     def is_valid(cls, v, values, **kwargs):
