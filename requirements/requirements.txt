@@ -43,7 +43,9 @@ passlib==1.7.4
 psycopg2==2.9.3
     # via -r requirements/requirements.in
 pydantic==1.10.2
-    # via fastapi
+    # via
+    #   -r requirements/requirements.in
+    #   fastapi
 pyparsing==3.0.9
     # via packaging
 python-decouple==3.6

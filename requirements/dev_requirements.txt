@@ -81,7 +81,9 @@ psycopg2==2.9.3
 pycodestyle==2.9.1
     # via flake8
 pydantic==1.10.2
-    # via fastapi
+    # via
+    #   -r requirements/dev_requirements.in
+    #   fastapi
 pyflakes==2.5.0
     # via flake8
 pyparsing==3.0.9

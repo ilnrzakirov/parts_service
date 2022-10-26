@@ -11,4 +11,5 @@ fastapi==0.85.0
 uvicorn==0.18.3
 passlib==1.7.4
 bcrypt==4.0.1
+pydantic==1.10.2
 
