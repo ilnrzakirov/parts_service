@@ -22,11 +22,15 @@ class User(BaseModel):
     username = Column(VARCHAR(255), nullable=False, unique=True)
     password = Column(VARCHAR(500), nullable=False)
     email = Column(VARCHAR(300), nullable=False, unique=True)
+    is_superuser = Column(sqlalchemy.Boolean, default=False)
+    is_stuf = Column(sqlalchemy.Boolean, default=False)
 
-    def __init__(self, username, password, email):
+    def __init__(self, username, password, email, superuser=False, stuf=False):
         self.username = username
         self.password = bcrypt.encrypt(password)
         self.email = email
+        self.is_stuf = stuf
+        self.is_superuser = superuser
 
     def password_is_valid(self, password):
         """
