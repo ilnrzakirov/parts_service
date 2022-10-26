@@ -66,7 +66,7 @@ class Category(BaseModel):
 
     id = Column(Integer, primary_key=True)
     name = Column(VARCHAR(255), unique=True)
-    product = relationship("products", secondary="association", backref="categories")
+    product = relationship("Product", secondary="association", backref="categories")
 
     def __str__(self):
         return self.name
@@ -89,7 +89,7 @@ class Product(BaseModel):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True)
-    category = relationship("categories", secondary="association", backref="products")
+    category = relationship("Category", secondary="association", backref="products")
     balance = Column(Integer, nullable=False)
     company = Column(Integer, ForeignKey("companies.id"))
     name = Column(VARCHAR(255), nullable=False)

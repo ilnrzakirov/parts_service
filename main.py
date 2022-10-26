@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 from loguru import logger
 
+from repositories.users import UserRepository
 from settings import (
     UVICORN_HOST,
     UVICORN_PORT,
@@ -13,6 +14,9 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
+    user = UserRepository()
+    res = await user.get_all()
+    print(res)
     return {"message": "Hello"}
 
 
