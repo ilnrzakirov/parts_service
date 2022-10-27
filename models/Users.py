@@ -16,6 +16,9 @@ class user(BaseModel):
 
 
 class UserIn(BaseModel):
+    """
+        Модель для регистрации
+    """
     username: str
     password: constr(min_length=8)
     password2: str
