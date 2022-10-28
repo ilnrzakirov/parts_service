@@ -9,6 +9,9 @@ from repositories.base import BaseRepository
 
 
 class UserRepository(BaseRepository):
+    """
+        Репозиторий Юзера
+    """
 
     async def get_all(self, limit: int = 10, skip: int = 0) -> list[user]:
         query = sqlalchemy.select(User).limit(limit).offset(skip)
