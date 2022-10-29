@@ -86,7 +86,7 @@ class UserRepository(BaseRepository):
         :param user_in: UserIn (пайдантик модель Юзера)
         :return: user
         """
-        logger.info(f"Запрос на обновление юзера id: {id}")
+        logger.info(f"Запрос на обновление юзера по id: {id}")
         if user_in is None:
             return None
         new_user = user(
