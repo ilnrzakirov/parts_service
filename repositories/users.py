@@ -72,6 +72,12 @@ class UserRepository(BaseRepository):
         return user.parse_obj(instance)
 
     async def update(self, id: int, user_in: UserIn) -> user | None:
+        """
+            Обновляет юзера
+        :param id: id юзера
+        :param user_in: UserIn (пайдантик модель Юзера)
+        :return: user
+        """
         if user_in is None:
             return None
         new_user = user(
