@@ -54,6 +54,11 @@ class UserRepository(BaseRepository):
         return new_user
 
     async def get_by_email(self, email: str) -> user | None:
+        """
+            Берет из базы юзера по email и возвращяет
+        :param user_in: str
+        :return: user
+        """
         query = sqlalchemy.select(User).where(email == email)
         user_db = await self.session.execute(query)
         instance = user_db.scalars().first()
