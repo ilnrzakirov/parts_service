@@ -15,10 +15,21 @@ class UserRepository(BaseRepository):
     """
 
     async def get_all(self, limit: int = 10, skip: int = 0) -> list[user]:
+        """
+            Возвращяет список всех юзеров
+        :param limit: int (Лимитировать длину списка)
+        :param skip: int (Сколько юзеров пропустить)
+        :return: list (список юзеров)
+        """
         query = sqlalchemy.select(User).limit(limit).offset(skip)
         return await self.session.execute(query)
 
     async def get_by_id(self, id: int) -> user | None:
+        """
+            Берет из базы юзера по id и возвращяет
+        :param id: int
+        :return: user
+        """
         query = sqlalchemy.select(User).where(User.id == id)
         user_db = await self.session.execute(query)
         instance = user_db.scalars().first()
