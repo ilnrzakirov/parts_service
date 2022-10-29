@@ -7,5 +7,5 @@ class BaseRepository:
     """
         Репозиторий для обращения к БД
     """
-    def __init__(self, session_maker: sessionmaker = session_maker):
-        self.session = session_maker()
+    def __init__(self, session: sessionmaker = session_maker):
+        self.session = session()
