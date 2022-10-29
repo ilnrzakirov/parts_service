@@ -61,7 +61,7 @@ class UserRepository(BaseRepository):
     async def get_by_email(self, email: str) -> user | None:
         """
             Берет из базы юзера по email и возвращяет
-        :param user_in: str
+        :param email: str
         :return: user
         """
         query = sqlalchemy.select(User).where(email == email)
