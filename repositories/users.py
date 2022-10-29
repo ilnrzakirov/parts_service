@@ -7,6 +7,7 @@ from models.Users import (
     user,
 )
 from repositories.base import BaseRepository
+from settings import logger
 
 
 class UserRepository(BaseRepository):
@@ -21,6 +22,7 @@ class UserRepository(BaseRepository):
         :param skip: int (Сколько юзеров пропустить)
         :return: list (список юзеров)
         """
+        logger.info(f"Запрос на выборку списка юзеров лимит: {limit}, skip: {skip}")
         query = sqlalchemy.select(User).limit(limit).offset(skip)
         return await self.session.execute(query)
 
@@ -30,10 +32,12 @@ class UserRepository(BaseRepository):
         :param id: int
         :return: user
         """
+        logger.info(f"Запрос выдать юзера по id: {id}")
         query = sqlalchemy.select(User).where(User.id == id)
         user_db = await self.session.execute(query)
         instance = user_db.scalars().first()
         if instance is None:
+            logger.warning("Неуспешно, Юзер не найден")
             return None
         return user.parse_obj(instance)
 
@@ -43,7 +47,9 @@ class UserRepository(BaseRepository):
         :param user_in: UserIn (пайдантик модель юзера)
         :return: user
         """
+        logger.info("Запрос на создания юзера")
         if user_in is None:
+            logger.warning("Неуспешно, нечего создавать")
             return None
         new_user = user(
             username=user_in.username,
@@ -64,10 +70,12 @@ class UserRepository(BaseRepository):
         :param email: str
         :return: user
         """
+        logger.info(f"Запрос на выдачу юзера по email: {email}")
         query = sqlalchemy.select(User).where(email == email)
         user_db = await self.session.execute(query)
         instance = user_db.scalars().first()
         if instance is None:
+            logger.warning("Неуспешно, юзер не найден")
             return None
         return user.parse_obj(instance)
 
@@ -78,6 +86,7 @@ class UserRepository(BaseRepository):
         :param user_in: UserIn (пайдантик модель Юзера)
         :return: user
         """
+        logger.info(f"Запрос на обновление юзера id: {id}")
         if user_in is None:
             return None
         new_user = user(
