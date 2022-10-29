@@ -38,6 +38,11 @@ class UserRepository(BaseRepository):
         return user.parse_obj(instance)
 
     async def create(self, user_in: UserIn) -> user | None:
+        """
+            Создает изера с пайдантик модели
+        :param user_in: UserIn (пайдантик модель юзера)
+        :return: user
+        """
         if user_in is None:
             return None
         new_user = user(
