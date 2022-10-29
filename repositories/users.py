@@ -1,5 +1,6 @@
 import sqlalchemy
 
+from core.security import crypt_password
 from db import User
 from models.Users import (
     UserIn,
@@ -33,7 +34,7 @@ class UserRepository(BaseRepository):
             email=user_in.email,
             is_superuser=user_in.is_superuser,
             is_stuf=user_in.is_stuf,
-            password=UserIn.password,
+            password=crypt_password(UserIn.password),
         )
         values = {**new_user.dict()}
         values.pop("id", None)
@@ -49,5 +50,19 @@ class UserRepository(BaseRepository):
             return None
         return user.parse_obj(instance)
 
-    async def update(self, user_in: UserIn) -> user:
-        pass
+    async def update(self, id: int, user_in: UserIn) -> user | None:
+        if user_in is None:
+            return None
+        new_user = user(
+            id=id,
+            username=user_in.username,
+            email=user_in.email,
+            is_superuser=user_in.is_superuser,
+            is_stuf=user_in.is_stuf,
+            password=crypt_password(UserIn.password),
+        )
+        values = {**new_user.dict()}
+        values.pop("id", None)
+        query = sqlalchemy.update(User).where(User.id == id).values(values)
+        self.session.execute(query)
+        return new_user
