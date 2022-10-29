@@ -25,8 +25,21 @@ class UserRepository(BaseRepository):
             return None
         return user.parse_obj(instance)
 
-    async def create(self, user_in: UserIn) -> user:
-        pass
+    async def create(self, user_in: UserIn) -> user | None:
+        if user_in is None:
+            return None
+        new_user = user(
+            username=user_in.username,
+            email=user_in.email,
+            is_superuser=user_in.is_superuser,
+            is_stuf=user_in.is_stuf,
+            password=UserIn.password,
+        )
+        values = {**new_user.dict()}
+        values.pop("id", None)
+        query = sqlalchemy.insert(User).values(values)
+        new_user.id = self.session.execute(query)
+        return new_user
 
     async def get_by_email(self, email: str) -> user | None:
         query = sqlalchemy.select(User).where(email == email)
