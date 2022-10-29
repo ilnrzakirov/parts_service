@@ -23,13 +23,18 @@ class UserRepository(BaseRepository):
         instance = user_db.scalars().first()
         if instance is None:
             return None
-        return user.parse_obj(user_db)
+        return user.parse_obj(instance)
 
     async def create(self, user_in: UserIn) -> user:
         pass
 
-    async def get_by_email(self, email: str) -> user:
-        pass
+    async def get_by_email(self, email: str) -> user | None:
+        query = sqlalchemy.select(User).where(email == email)
+        user_db = await self.session.execute(query)
+        instance = user_db.scalars().first()
+        if instance is None:
+            return None
+        return user.parse_obj(instance)
 
     async def update(self, user_in: UserIn) -> user:
         pass
