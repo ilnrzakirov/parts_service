@@ -17,14 +17,19 @@ class UserRepository(BaseRepository):
         query = sqlalchemy.select(User).limit(limit).offset(skip)
         return await self.session.execute(query)
 
-    async def get_by_id(self, id: int) -> user:
-        pass
+    async def get_by_id(self, id: int) -> user | None:
+        query = sqlalchemy.select(User).where(User.id == id)
+        user_db = await self.session.execute(query)
+        instance = user_db.scalars().first()
+        if instance is None:
+            return None
+        return user.parse_obj(user_db)
 
-    async def create(self, user: UserIn) -> user:
+    async def create(self, user_in: UserIn) -> user:
         pass
 
     async def get_by_email(self, email: str) -> user:
         pass
 
-    async def update(self, user: UserIn) -> user:
+    async def update(self, user_in: UserIn) -> user:
         pass

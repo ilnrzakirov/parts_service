@@ -15,7 +15,7 @@ app = FastAPI()
 @app.get("/")
 async def root():
     user = UserRepository()
-    res = await user.get_all()
+    res = await user.get_by_id(1)
     print(res)
     return {"message": "Hello"}
 
