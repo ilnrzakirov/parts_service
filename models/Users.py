@@ -6,7 +6,7 @@ from pydantic import (
 )
 
 
-class user(BaseModel):
+class UserPydantic(BaseModel):
     id: int | None
     username: str
     password: str

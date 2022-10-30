@@ -5,7 +5,7 @@ from core.security import crypt_password
 from db import User
 from models.Users import (
     UserIn,
-    user,
+    UserPydantic,
 )
 from repositories.base import BaseRepository
 
@@ -15,7 +15,7 @@ class UserRepository(BaseRepository):
         Репозиторий Юзера
     """
 
-    async def get_all(self, limit: int = 10, skip: int = 0) -> list[user]:
+    async def get_all(self, limit: int = 10, skip: int = 0) -> list[UserPydantic]:
         """
             Возвращяет список всех юзеров
         :param limit: int (Лимитировать длину списка)
@@ -26,7 +26,7 @@ class UserRepository(BaseRepository):
         query = sqlalchemy.select(User).limit(limit).offset(skip)
         return await self.session.execute(query)
 
-    async def get_by_id(self, id: int) -> user | None:
+    async def get_by_id(self, id: int) -> UserPydantic | None:
         """
             Берет из базы юзера по id и возвращяет
         :param id: int
@@ -39,9 +39,9 @@ class UserRepository(BaseRepository):
         if instance is None:
             logger.warning("Неуспешно, Юзер не найден")
             return None
-        return user.parse_obj(instance)
+        return UserPydantic.parse_obj(instance)
 
-    async def create(self, user_in: UserIn) -> user | None:
+    async def create(self, user_in: UserIn) -> UserPydantic | None:
         """
             Создает изера с пайдантик модели
         :param user_in: UserIn (пайдантик модель юзера)
@@ -51,7 +51,7 @@ class UserRepository(BaseRepository):
         if user_in is None:
             logger.warning("Неуспешно, нечего создавать")
             return None
-        new_user = user(
+        new_user = UserPydantic(
             username=user_in.username,
             email=user_in.email,
             is_superuser=user_in.is_superuser,
@@ -64,7 +64,7 @@ class UserRepository(BaseRepository):
         new_user.id = self.session.execute(query)
         return new_user
 
-    async def get_by_email(self, email: str) -> user | None:
+    async def get_by_email(self, email: str) -> UserPydantic | None:
         """
             Берет из базы юзера по email и возвращяет
         :param email: str
@@ -77,9 +77,9 @@ class UserRepository(BaseRepository):
         if instance is None:
             logger.warning("Неуспешно, юзер не найден")
             return None
-        return user.parse_obj(instance)
+        return UserPydantic.parse_obj(instance)
 
-    async def update(self, id: int, user_in: UserIn) -> user | None:
+    async def update(self, id: int, user_in: UserIn) -> UserPydantic | None:
         """
             Обновляет юзера
         :param id: id юзера
@@ -89,7 +89,7 @@ class UserRepository(BaseRepository):
         logger.info(f"Запрос на обновление юзера по id: {id}")
         if user_in is None:
             return None
-        new_user = user(
+        new_user = UserPydantic(
             id=id,
             username=user_in.username,
             email=user_in.email,

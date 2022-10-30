@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class company(BaseModel):
+class CompanyPydantic(BaseModel):
     id: int
     name: str
