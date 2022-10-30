@@ -1,4 +1,5 @@
 import sqlalchemy
+from loguru import logger
 
 from core.security import crypt_password
 from db import User
@@ -7,7 +8,6 @@ from models.Users import (
     user,
 )
 from repositories.base import BaseRepository
-from settings import logger
 
 
 class UserRepository(BaseRepository):

@@ -66,7 +66,7 @@ class Category(BaseModel):
 
     id = Column(Integer, primary_key=True)
     name = Column(VARCHAR(255), unique=True)
-    product = relationship("Product", secondary="association", backref="categories")
+    # product = relationship("Product", secondary="association", backref="categories")
 
     def __str__(self):
         return self.name
