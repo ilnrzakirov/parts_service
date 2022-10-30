@@ -6,7 +6,7 @@ from models.Company import CompanyPydantic
 
 class ProductPydantic(BaseModel):
     """
-        Пайдтик модель продукта
+        Пайдантик модель продукта
     """
 
     id: int
