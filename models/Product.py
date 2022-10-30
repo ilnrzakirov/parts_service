@@ -5,6 +5,9 @@ from models.Company import CompanyPydantic
 
 
 class ProductPydantic(BaseModel):
+    """
+        Пайдтик модель продукта
+    """
 
     id: int
     category: CategoryPydantic
