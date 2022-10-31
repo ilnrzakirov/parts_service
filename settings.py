@@ -8,8 +8,12 @@ from db.engine import (
     get_session_maker,
 )
 
+# Config uvicorn
+
 UVICORN_PORT = int(config("UVICORN_PORT"))
 UVICORN_HOST = config("UVICORN_HOST")
+
+# Config DB
 
 DB_USER = config("DB_USER")
 DB_PASS = config("DB_PASS")
@@ -29,6 +33,10 @@ postgres_url = URL.create(
 async_engine = asinc_engine(postgres_url)
 session_maker = get_session_maker(async_engine)  # noqa f841
 
+# config redis
+
 redis = Redis(port=6379, host="localhost")
+
+# config logger
 
 logger = logger.add("log.log", format="{time}, {level}, {message}", level="INFO", encoding="UTF-8")
