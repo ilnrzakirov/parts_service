@@ -61,7 +61,7 @@ class UserRepository(BaseRepository):
         values = {**new_user.dict()}
         values.pop("id", None)
         query = sqlalchemy.insert(User).values(values)
-        new_user.id = self.session.execute(query)
+        new_user.id = await self.session.execute(query)
         return new_user
 
     async def get_by_email(self, email: str) -> UserPydantic | None:
