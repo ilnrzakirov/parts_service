@@ -19,6 +19,7 @@ class CategoryRepository(BaseRepository):
         result = []
         for category in cat_list:
             result.append(CategoryPydantic.parse_obj(category[0]))
+        logger.info("Успешно")
         return result
 
     async def get_by_name(self, name: str) -> CategoryPydantic | None:
@@ -34,6 +35,7 @@ class CategoryRepository(BaseRepository):
         if instance is None:
             logger.warning("Неуспешно, Категория не найдена")
             return None
+        logger.info("Успешно")
         return CategoryPydantic.parse_obj(instance)
 
     async def create(self, category_in: CategoryPydantic) -> CategoryPydantic | None:
@@ -50,4 +52,5 @@ class CategoryRepository(BaseRepository):
         values.pop("id", None)
         query = sqlalchemy.insert(Category).values(values)
         category_in.id = await self.session.execute(query)
+        logger.info("Успешно")
         return category_in
