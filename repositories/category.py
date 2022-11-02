@@ -9,6 +9,10 @@ from repositories.base import BaseRepository
 class CategoryRepository(BaseRepository):
 
     async def get_all(self) -> list[CategoryPydantic]:
+        """
+            Выдает список категорий
+        :return: list[CategoryPydantic]
+        """
         logger.info("Запрос на выборку списка категорий")
         query = sqlalchemy.select(Category)
         cat_list = await self.session.execute(query)
@@ -18,6 +22,11 @@ class CategoryRepository(BaseRepository):
         return result
 
     async def get_by_name(self, name: str) -> CategoryPydantic | None:
+        """
+            Выдает категорию по имени, если не найдет то None
+        :param name: str
+        :return: CategoryPydantic | None
+        """
         logger.info("Запрос на выдачу категории по имени")
         query = sqlalchemy.select(Category).where(Category.name == name)
         category_db = self.session.execute(query)
@@ -28,6 +37,11 @@ class CategoryRepository(BaseRepository):
         return CategoryPydantic.parse_obj(instance)
 
     async def create(self, category_in: CategoryPydantic) -> CategoryPydantic | None:
+        """
+            Создает и возвращяет котегорию
+        :param category_in: CategoryPydantic
+        :return: CategoryPydantic | None
+        """
         logger.info("Запрос на создание категории")
         if category_in is None:
             logger.warning("Неуспешно, нечего создавать")
