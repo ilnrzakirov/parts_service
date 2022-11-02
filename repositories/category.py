@@ -11,7 +11,11 @@ class CategoryRepository(BaseRepository):
     async def get_all(self) -> list[CategoryPydantic]:
         logger.info("Запрос на выборку списка категорий")
         query = sqlalchemy.select(Category)
-        return await self.session.execute(query)
+        cat_list = await self.session.execute(query)
+        result = []
+        for category in cat_list:
+            result.append(CategoryPydantic.parse_obj(category[0]))
+        return result
 
     async def get_by_name(self, name: str) -> CategoryPydantic | None:
         logger.info("Запрос на выдачу категории по имени")
