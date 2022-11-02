@@ -22,3 +22,14 @@ class CategoryRepository(BaseRepository):
             logger.warning("Неуспешно, Категория не найдена")
             return None
         return CategoryPydantic.parse_obj(instance)
+
+    async def create(self, category_in: CategoryPydantic) -> CategoryPydantic | None:
+        logger.info("Запрос на создание категории")
+        if category_in is None:
+            logger.warning("Неуспешно, нечего создавать")
+            return None
+        values = {**category_in.dict()}
+        values.pop("id", None)
+        query = sqlalchemy.insert(Category).values(values)
+        category_in.id = await self.session.execute(query)
+        return category_in
