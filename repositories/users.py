@@ -105,11 +105,11 @@ class UserRepository(BaseRepository):
             email=user_in.email,
             is_superuser=user_in.is_superuser,
             is_stuf=user_in.is_stuf,
-            password=crypt_password(UserIn.password),
+            password=crypt_password(user_in.password),
         )
         values = {**new_user.dict()}
         values.pop("id", None)
         query = sqlalchemy.update(User).where(User.id == id).values(values)
-        session.execute(query)
-        session.commit()
+        await session.execute(query)
+        await session.commit()
         return new_user
