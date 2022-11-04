@@ -83,7 +83,6 @@ class UserRepository(BaseRepository):
         query = sqlalchemy.select(User).where(User.email == email)
         user_db = await session.execute(query)
         instance = user_db.scalars().first()
-        print(instance)
         if instance is None:
             logger.warning("Неуспешно, юзер не найден")
             return None
@@ -112,4 +111,5 @@ class UserRepository(BaseRepository):
         values.pop("id", None)
         query = sqlalchemy.update(User).where(User.id == id).values(values)
         session.execute(query)
+        session.commit()
         return new_user
