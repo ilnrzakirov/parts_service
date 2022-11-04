@@ -1,5 +1,4 @@
 import uvicorn
-from fastapi import FastAPI
 from loguru import logger
 from starlette.requests import Request
 
@@ -9,10 +8,8 @@ from fastapi.encoders import jsonable_encoder
 from settings import (
     UVICORN_HOST,
     UVICORN_PORT,
-    async_engine,
+    async_engine, app,
 )
-
-app = FastAPI()
 
 
 @app.get("/create/{name}")

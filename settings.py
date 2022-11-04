@@ -1,5 +1,6 @@
 from aioredis import Redis
 from decouple import config
+from fastapi import FastAPI
 from loguru import logger
 from sqlalchemy.engine import URL
 
@@ -40,3 +41,5 @@ redis = Redis(port=6379, host="localhost")
 # config logger
 
 logger = logger.add("log.log", format="{time}, {level}, {message}", level="INFO", encoding="UTF-8")
+
+app = FastAPI()
