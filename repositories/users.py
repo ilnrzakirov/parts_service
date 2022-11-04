@@ -22,9 +22,14 @@ class UserRepository(BaseRepository):
         :param skip: int (Сколько юзеров пропустить)
         :return: list (список юзеров)
         """
+        session = self.session()
         logger.info(f"Запрос на выборку списка юзеров лимит: {limit}, skip: {skip}")
         query = sqlalchemy.select(User).limit(limit).offset(skip)
-        return await self.session.execute(query)
+        result = await session.execute(query)
+        result_list = []
+        for item in result:
+            result_list.append(UserPydantic.parse_obj(item[0].__dict__))
+        return result_list
 
     async def get_by_id(self, id: int) -> UserPydantic | None:
         """
@@ -32,14 +37,15 @@ class UserRepository(BaseRepository):
         :param id: int
         :return: user
         """
+        session = self.session()
         logger.info(f"Запрос выдать юзера по id: {id}")
         query = sqlalchemy.select(User).where(User.id == id)
-        user_db = await self.session.execute(query)
+        user_db = await session.execute(query)
         instance = user_db.scalars().first()
         if instance is None:
             logger.warning("Неуспешно, Юзер не найден")
             return None
-        return UserPydantic.parse_obj(instance)
+        return UserPydantic.parse_obj(instance.__dict__)
 
     async def create(self, user_in: UserIn) -> UserPydantic | None:
         """
@@ -47,6 +53,7 @@ class UserRepository(BaseRepository):
         :param user_in: UserIn (пайдантик модель юзера)
         :return: user
         """
+        session = self.session()
         logger.info("Запрос на создания юзера")
         if user_in is None:
             logger.warning("Неуспешно, нечего создавать")
@@ -56,12 +63,13 @@ class UserRepository(BaseRepository):
             email=user_in.email,
             is_superuser=user_in.is_superuser,
             is_stuf=user_in.is_stuf,
-            password=crypt_password(UserIn.password),
+            password=crypt_password(user_in.password),
         )
         values = {**new_user.dict()}
         values.pop("id", None)
         query = sqlalchemy.insert(User).values(values)
-        new_user.id = await self.session.execute(query)
+        new_user.id = await session.execute(query)
+        await session.commit()
         return new_user
 
     async def get_by_email(self, email: str) -> UserPydantic | None:
@@ -70,14 +78,16 @@ class UserRepository(BaseRepository):
         :param email: str
         :return: user
         """
+        session = self.session()
         logger.info(f"Запрос на выдачу юзера по email: {email}")
-        query = sqlalchemy.select(User).where(email == email)
-        user_db = await self.session.execute(query)
+        query = sqlalchemy.select(User).where(User.email == email)
+        user_db = await session.execute(query)
         instance = user_db.scalars().first()
+        print(instance)
         if instance is None:
             logger.warning("Неуспешно, юзер не найден")
             return None
-        return UserPydantic.parse_obj(instance)
+        return UserPydantic.parse_obj(instance.__dict__)
 
     async def update(self, id: int, user_in: UserIn) -> UserPydantic | None:
         """
@@ -86,6 +96,7 @@ class UserRepository(BaseRepository):
         :param user_in: UserIn (пайдантик модель Юзера)
         :return: user
         """
+        session = self.session()
         logger.info(f"Запрос на обновление юзера по id: {id}")
         if user_in is None:
             return None
@@ -100,5 +111,5 @@ class UserRepository(BaseRepository):
         values = {**new_user.dict()}
         values.pop("id", None)
         query = sqlalchemy.update(User).where(User.id == id).values(values)
-        self.session.execute(query)
+        session.execute(query)
         return new_user

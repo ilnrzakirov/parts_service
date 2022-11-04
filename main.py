@@ -1,8 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 from loguru import logger
+from starlette.requests import Request
 
+from models.Users import UserIn
 from repositories.users import UserRepository
+from fastapi.encoders import jsonable_encoder
 from settings import (
     UVICORN_HOST,
     UVICORN_PORT,
@@ -12,12 +15,22 @@ from settings import (
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
+@app.get("/create/{name}")
+async def root(name: str, request: Request):
     user = UserRepository()
-    res = await user.get_all()
-    print(res)
-    return {"message": "Hello"}
+    new = UserIn(
+        username=f"{name}",
+        password="123456789",
+        password2="123456789",
+        email="1234@123.com",
+        is_superuser=True,
+        is_stuf=True
+    )
+    # res = await user.create(new)
+    res = await user.get_by_id(15)
+    # new_user = jsonable_encoder(res)
+    # print(new_user)
+    return {"message": "Hello", "instance": res}
 
 
 @app.on_event("startup")
