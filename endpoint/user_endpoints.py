@@ -10,8 +10,12 @@ user_router = APIRouter()
 async def create_user(user_in: UserIn):
     user = UserRepository()
     try:
+        user_in.is_valid()
         await user.create(user_in)
         return {"msg": "Ok"}
+    except ValueError:
+        logger.warning("Не верно ввден пароль")
+        return {"msg": "Не совпадают пароли"}
     except Exception as error:
         logger.warning(error)
         return {"msg": "Юзер уже существует"}
@@ -27,3 +31,4 @@ async def update_user(user_in: UserIn):
     except Exception as error:
         logger.warning(error)
         return {"msg": error}
+
