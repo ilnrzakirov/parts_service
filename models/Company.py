@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class CompanyPydantic(BaseModel):
     """
-        Падантик модель компаний
+        Пайдантик модель компаний
     """
     id: int
     name: str
