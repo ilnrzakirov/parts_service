@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from loguru import logger
+
 from models.Users import UserIn
 from repositories.users import UserRepository
 
@@ -8,6 +9,11 @@ user_router = APIRouter()
 
 @user_router.post("/create/")
 async def create_user(user_in: UserIn):
+    """
+        Эндпоинт для создания юзера
+    :param user_in: Pydantic модель
+    :return: msg со статусом
+    """
     user = UserRepository()
     try:
         user_in.is_valid()
@@ -31,4 +37,3 @@ async def update_user(user_in: UserIn):
     except Exception as error:
         logger.warning(error)
         return {"msg": error}
-
