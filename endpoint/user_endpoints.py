@@ -29,6 +29,11 @@ async def create_user(user_in: UserIn):
 
 @user_router.post("/update/")
 async def update_user(user_in: UserIn):
+    """
+        Эндпоинт для обновления юзера
+    :param user_in: Pydsntic user in
+    :return: msg json
+    """
     user = UserRepository()
     try:
         instance = await user.get_by_email(user_in.email)
